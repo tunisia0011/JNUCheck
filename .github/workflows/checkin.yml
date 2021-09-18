@@ -1,0 +1,29 @@
+name: selenium
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: pip install -r ./requirements.txt
+
+    - name: 'Working'
+      run: |
+        sudo cp -p ./chromedriver /usr/bin/
+        chmod -R 777 /usr/bin/chromedriver
+        python ./checkin.py
