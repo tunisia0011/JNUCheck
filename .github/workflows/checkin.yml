@@ -27,3 +27,6 @@ jobs:
         sudo cp -p ./chromedriver /usr/bin/
         chmod -R 777 /usr/bin/chromedriver
         python ./checkin.py
+      env:
+      USERNAME: ${{ secrets.USERNAME }}
+      PASSWORD: ${{ secrets.PASSWORD }}
