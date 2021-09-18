@@ -1,4 +1,4 @@
-import os
+from os import getenv
 import cv2
 import time
 import random
