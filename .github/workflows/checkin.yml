@@ -1,32 +1,36 @@
-name: selenium
+name: Checkin
 
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+  schedule:
+    # 此处为UTC时间0点、1点和23点，对应北京时间+8为8点、9点和7点
+    - cron: '0 0,1,23 * * *'
+  watch:
+    types: started
 
-  workflow_dispatch:
+env:
+  TZ: Asia/Shanghai
 
 jobs:
-  build:
+  checkin:
+
     runs-on: ubuntu-latest
+
     steps:
     - uses: actions/checkout@v2
+      # 下面2行用于自动获取最新的打卡代码，若不需要可以用#号作开头以注释掉
 
-    - name: Set up Python
+    - name: Set up Python 3.7
       uses: actions/setup-python@v2
       with:
-        python-version: '3.x'
+        python-version: 3.7
 
     - name: Install dependencies
-      run: pip install -r ./requirements.txt
-
-    - name: 'Working'
       run: |
-        sudo cp -p ./chromedriver /usr/bin/
-        chmod -R 777 /usr/bin/chromedriver
-        python ./checkin.py
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: 打卡
+      run: |
+        python checkin.py
       env:
-      USERNAME: ${{ secrets.USERNAME }}
-      PASSWORD: ${{ secrets.PASSWORD }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PASSWORD: ${{ secrets.PASSWORD }}
