@@ -15,7 +15,14 @@ from selenium.webdriver.support import expected_conditions as EC
 
 class Slider():
     def __init__(self):
-        self.driver = webdriver.Chrome()
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument('--headless')
+        chrome_options.add_argument('--no-sandbox')
+        chrome_options.add_argument('--disable-gpu')
+        chrome_options.add_argument('--disable-dev-shm-usage')
+        chromedriver = "/usr/bin/chromedriver"
+        os.environ["webdriver.chrome.driver"] = chromedriver
+        self.driver = webdriver.Chrome(chrome_options=chrome_options,executable_path=chromedriver)
         self.url = 'https://stuhealth.jnu.edu.cn/#/login'  # 测试网站
         self.wait = WebDriverWait(self.driver, 20)
         self.driver.get(self.url)
