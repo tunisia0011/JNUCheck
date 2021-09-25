@@ -1,6 +1,5 @@
 import re
 import cv2
-import sys
 from os import getenv
 import numpy as np
 from io import BytesIO
@@ -11,10 +10,6 @@ from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
-
-
-reload(sys)
-sys.setdefaultencoding('utf8')
 
 class CrackSlider():
     """
