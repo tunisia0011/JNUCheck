@@ -104,24 +104,24 @@ class CrackSlider():
         ActionChains(self.driver).move_by_offset(xoffset=3, yoffset=0).perform()
         time.sleep(0.5)
         ActionChains(self.driver).release().perform()
-        try:
+'''        try:
             failure = self.wait.until(EC.text_to_be_present_in_element((By.CLASS_NAME, 'yidun_tips__text'), '向右滑动滑块填充拼图'))
             print(failure)
         except:
-            print('验证成功')
+            print('Verification Successful')
             return None
         if failure:
-            self.crack_slider()
+            self.crack_slider()'''
 
 def tg_push(text):
     push_url = 'https://api.telegram.org/bot' + BOTTOKEN + '/sendMessage?chat_id=' + TGCHATID + '&text=' + text
     rPush = requests.get(push_url)
     if rPush.status_code == 200 :
-        print('推送成功')
+        print('Push Successful')
     elif rPush.status_code == 400 :
-        print('CHATID 填写有误')
+        print('Wrong CHATID')
     else :
-        print('推送失败，未知错误')
+        print('Unkown Error for Pushing')
 
 if __name__ == '__main__':
     TGCHATID = getenv('TGCHATID')
@@ -152,7 +152,7 @@ if __name__ == '__main__':
                 print(result)
                 tg_push(text=result[1])
             except:
-                tg_push(text="签到失败，未知错误")
+                tg_push(text="Unkown Error for Checking")
         sl.driver.close()
     except:
         try:
@@ -167,5 +167,5 @@ if __name__ == '__main__':
                 print(result)
                 tg_push(text=result[1])
             except:
-                tg_push(text="签到失败，未知错误")
+                tg_push(text="Unkown Error for Checking")
         sl.driver.close()
