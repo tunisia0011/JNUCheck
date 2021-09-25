@@ -151,14 +151,20 @@ if __name__ == '__main__':
             result = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px"]').get_attribute("innerHTML")
             tg_push(text=result)
         except:
-            result = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px;margin-top: 17px"]').get_attribute("innerHTML")
-            tg_push(text=result)
+            try:
+                result = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px;margin-top: 17px"]').get_attribute("innerHTML")
+                tg_push(text=result)
+            except:
+                tg_push(text="签到失败，未知错误")
         sl.driver.close()
     except:
         try:
             result = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px"]').get_attribute("innerHTML")
             tg_push(text=result)
         except:
-            result = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px;margin-top: 17px"]').get_attribute("innerHTML")
-            tg_push(text=result)
+            try:
+                result = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px;margin-top: 17px"]').get_attribute("innerHTML")
+                tg_push(text=result)
+            except:
+                tg_push(text="签到失败，未知错误")
         sl.driver.close()
