@@ -21,8 +21,8 @@ jobs:
       with:
         python-version: 3.9
 
-    - name: Set tz
-    - uses: szenius/set-timezone@v1.0
+    - name: Set Timezone
+      uses: szenius/set-timezone@v1.0
       with:
         timezoneWindows: "China Standard Time"
 
