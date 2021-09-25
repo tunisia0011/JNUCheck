@@ -3,7 +3,7 @@ name: Checkin
 on:
   schedule:
     # 此处为UTC时间0点、1点和23点，对应北京时间+8为8点、9点和7点
-    - cron: '0 0,1,23 * * *'
+    - cron: '0 0,1,2,23,24 * * *'
   watch:
     types: started
 
@@ -33,3 +33,6 @@ jobs:
       env:
         USERNAME: ${{ secrets.USERNAME }}
         PASSWORD: ${{ secrets.PASSWORD }}
+        TGCHATID: ${{ secrets.TGCHATID }}
+        BOTTOKEN: ${{ secrets.BOTTOKEN }}
+        
