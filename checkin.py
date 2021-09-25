@@ -112,7 +112,8 @@ class CrackSlider():
         ActionChains(self.driver).move_by_offset(xoffset=3, yoffset=0).perform()
         time.sleep(0.5)
         ActionChains(self.driver).release().perform()
-        if (self.driver.find_element_by_xpath('//*[@class="yidun_tips__text yidun-fallback__tip"]').get_attribute("innerHTML") == '向右滑动滑块填充拼图'):
+        time.sleep(2)
+        if (self.driver.find_element_by_xpath('//*[@class="yidun_tips__text yidun-fallback__tip"]').get_attribute("innerHTML") == '向右拖动滑块填充拼图'):
             print('滑动验证不通过，正在重试')
             self.crack_slider()
         else:
