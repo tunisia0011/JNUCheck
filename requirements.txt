@@ -3,3 +3,4 @@ selenium
 opencv-python
 Pillow
 numpy
+pyvirtualdisplay

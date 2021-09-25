@@ -1,12 +1,13 @@
+import re
 import os
 from os import getenv
-import re
 import cv2
 import numpy as np
 from io import BytesIO
 import time, requests
 from PIL import Image
 from selenium import webdriver
+from pyvirtualdisplay import Display
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -18,8 +19,10 @@ class CrackSlider():
     """
     def __init__(self):
         super(CrackSlider, self).__init__()
+        display = Display(visible=0, size=(800, 600))
+        display.start()
         chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument('--headless')
+        '''chrome_options.add_argument('--headless')'''
         chrome_options.add_argument('--no-sandbox')
         chrome_options.add_argument('--disable-gpu')
         chrome_options.add_argument('--disable-dev-shm-usage')
