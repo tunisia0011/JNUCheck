@@ -1,15 +1,16 @@
 import os
 from os import getenv
+import re
+import cv2
+import numpy as np
+from io import BytesIO
+import time, requests
 from PIL import Image
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
-import cv2
-import numpy as np
-from io import BytesIO
-import time, requests
 
 class CrackSlider():
     """
