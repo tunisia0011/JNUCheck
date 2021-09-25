@@ -149,31 +149,31 @@ if __name__ == '__main__':
         sl.driver.find_element_by_xpath('//*[@id="tj"]').click()
         time.sleep(3)
         try:
-            temp = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px;margin-top: 17px"]').get_attribute("innerHTML").encode().text()
+            temp = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px"]').get_attribute("innerHTML")
             result = re.split("<[^\u4e00-\u9fa5]+>",temp)
             print(result)
-            tg_push(text=result)
+            tg_push(text=result[2])
         except:
             try:
-                temp = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px;margin-top: 17px"]').get_attribute("innerHTML").encode().text()
+                temp = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px;margin-top: 17px"]').get_attribute("innerHTML")
                 result = re.split("<[^\u4e00-\u9fa5]+>",temp)
                 print(result)
-                tg_push(text=result)
+                tg_push(text=result[2])
             except:
                 tg_push(text="签到失败，未知错误")
         sl.driver.close()
     except:
         try:
-            temp = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px;margin-top: 17px"]').get_attribute("innerHTML").encode().text()
+            temp = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px"]').get_attribute("innerHTML")
             result = re.split("<[^\u4e00-\u9fa5]+>",temp)
             print(result)
-            tg_push(text=result)
+            tg_push(text=result[2])
         except:
             try:
-                temp = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px;margin-top: 17px"]').get_attribute("innerHTML").encode().text()
+                temp = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px;margin-top: 17px"]').get_attribute("innerHTML")
                 result = re.split("<[^\u4e00-\u9fa5]+>",temp)
                 print(result)
-                tg_push(text=result)
+                tg_push(text=result[2])
             except:
                 tg_push(text="签到失败，未知错误")
         sl.driver.close()
