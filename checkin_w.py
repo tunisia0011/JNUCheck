@@ -80,7 +80,7 @@ class CrackSlider():
             if len(loc[1]) > 1:
                 L += (R - L) / 2
             elif len(loc[1]) == 1:
-                print('distance area x position：%d' % loc[1][0])
+                '''print('目标区域起点x坐标为：%d' % loc[1][0])'''
                 break
             elif len(loc[1]) < 1:
                 R -= (R - L) / 2
