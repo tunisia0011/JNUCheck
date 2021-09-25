@@ -1,21 +1,22 @@
 import os
 from os import getenv
-import cv2
-import time
-import random
-import requests
-import numpy as np
 from PIL import Image
-from io import BytesIO
 from selenium import webdriver
-from selenium.webdriver.common.by import By
 from selenium.webdriver import ActionChains
-from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
+import cv2
+import numpy as np
+from io import BytesIO
+import time, requests
 
-
-class Slider():
+class CrackSlider():
+    """
+    通过浏览器截图，识别验证码中缺口位置，获取需要滑动距离，并模仿人类行为破解滑动验证码
+    """
     def __init__(self):
+        super(CrackSlider, self).__init__()
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--headless')
         chrome_options.add_argument('--no-sandbox')
@@ -28,129 +29,128 @@ class Slider():
         self.wait = WebDriverWait(self.driver, 20)
         self.driver.get(self.url)
         time.sleep(2)
-
-    def get_img(self):
-        target_link = self.wait.until(EC.presence_of_element_located((By.CLASS_NAME, 'yidun_bg-img'))).get_attribute('src')
-        template_link = self.wait.until(EC.presence_of_element_located((By.CLASS_NAME, 'yidun_jigsaw'))).get_attribute('src')
+    def open(self):
+        self.driver.get(self.url)
+    def get_pic(self):
+        time.sleep(2)
+        target = self.wait.until(EC.presence_of_element_located((By.CLASS_NAME, 'yidun_bg-img')))
+        template = self.wait.until(EC.presence_of_element_located((By.CLASS_NAME, 'yidun_jigsaw')))
+        target_link = target.get_attribute('src')
+        template_link = template.get_attribute('src')
         target_img = Image.open(BytesIO(requests.get(target_link).content))
         template_img = Image.open(BytesIO(requests.get(template_link).content))
         target_img.save('target.jpg')
         template_img.save('template.png')
-        size_loc = target_img.size
-        zoom = 320 / int(size_loc[0])  # 耦合像素
-        return zoom
-
-    def change_size(self, file):
-        image = cv2.imread(file, 1)  # 读取图片 image_name应该是变量
-        img = cv2.medianBlur(image, 5)  # 中值滤波，去除黑色边际中可能含有的噪声干扰
-        b = cv2.threshold(img, 15, 255, cv2.THRESH_BINARY)  # 调整裁剪效果
-        binary_image = b[1]  # 二值图--具有三通道
-        binary_image = cv2.cvtColor(binary_image, cv2.COLOR_BGR2GRAY)
-        x, y = binary_image.shape
-        edges_x = []
-        edges_y = []
-        for i in range(x):
-            for j in range(y):
-                if binary_image[i][j] == 255:
-                    edges_x.append(i)
-                    edges_y.append(j)
-
-        left = min(edges_x)  # 左边界
-        right = max(edges_x)  # 右边界
-        width = right - left  # 宽度
-        bottom = min(edges_y)  # 底部
-        top = max(edges_y)  # 顶部
-        height = top - bottom  # 高度
-        pre1_picture = image[left:left + width, bottom:bottom + height]  # 图片截取
-        return pre1_picture  # 返回图片数据
-
-    def match(self):
-        img_gray = cv2.imread('target.jpg', 0)
-        img_rgb = self.change_size('template.png')
-        template = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
-        # cv2.imshow('template', template)
-        # cv2.waitKey(0)
-        res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
+        size_orign = target.size
+        local_img = Image.open('target.jpg')
+        size_loc = local_img.size
+        self.zoom = 320 / int(size_loc[0])
+    def get_tracks(self, distance):
+        print(distance)
+        distance += 20
+        v = 0
+        t = 0.2
+        forward_tracks = []
+        current = 0
+        mid = distance * 3/5
+        while current < distance:
+            if current < mid:
+                a = 2
+            else:
+                a = -3
+            s = v * t + 0.5 * a * (t**2)
+            v = v + a * t
+            current += s
+            forward_tracks.append(round(s))
+        back_tracks = [-3,-3,-2,-2,-2,-2,-2,-1,-1,-1]
+        return {'forward_tracks':forward_tracks,'back_tracks':back_tracks}
+    def match(self, target, template):
+        img_rgb = cv2.imread(target)
+        img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+        template = cv2.imread(template,0)
         run = 1
-
-        # 使用二分法查找阈值的精确值
+        w, h = template.shape[::-1]
+        print(w, h)
+        res = cv2.matchTemplate(img_gray,template,cv2.TM_CCOEFF_NORMED) 
+        # 使用二分法查找阈值的精确值 
         L = 0
         R = 1
         while run < 20:
             run += 1
             threshold = (R + L) / 2
+            print(threshold)
             if threshold < 0:
                 print('Error')
                 return None
-            loc = np.where(res >= threshold)
+            loc = np.where( res >= threshold)
+            print(len(loc[1]))
             if len(loc[1]) > 1:
                 L += (R - L) / 2
             elif len(loc[1]) == 1:
+                print('目标区域起点x坐标为：%d' % loc[1][0])
                 break
             elif len(loc[1]) < 1:
                 R -= (R - L) / 2
         return loc[1][0]
-
-    def move_to_gap(self, tracks):
+    def crack_slider(self):
+        self.open()
+        target = 'target.jpg'
+        template = 'template.png'
+        self.get_pic()
+        distance = self.match(target, template)
+        tracks = self.get_tracks((distance + 7 )*self.zoom) # 对位移的缩放计算
+        print(tracks)
         slider = self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'yidun_slider')))
         ActionChains(self.driver).click_and_hold(slider).perform()
-        while tracks:
-            x = tracks.pop(0)
-            ActionChains(self.driver).move_by_offset(xoffset=x, yoffset=0).perform()
-            time.sleep(0.05)
-        time.sleep(0.05)
+        for track in tracks['forward_tracks']:
+            ActionChains(self.driver).move_by_offset(xoffset=track, yoffset=0).perform()
+        time.sleep(0.5)
+        for back_tracks in tracks['back_tracks']:
+            ActionChains(self.driver).move_by_offset(xoffset=back_tracks, yoffset=0).perform()
+        ActionChains(self.driver).move_by_offset(xoffset=-3, yoffset=0).perform()
+        ActionChains(self.driver).move_by_offset(xoffset=3, yoffset=0).perform()
+        time.sleep(0.5)
         ActionChains(self.driver).release().perform()
-
-    def get_tracks(self, distance, seconds, ease_func):
-        distance += 20
-        tracks = [0]
-        offsets = [0]
-        for t in np.arange(0.0, seconds, 0.1):
-            ease = ease_func
-            offset = round(ease(t / seconds) * distance)
-            tracks.append(offset - offsets[-1])
-            offsets.append(offset)
-        tracks.extend([-3, -2, -3, -2, -2, -2, -2, -1, -0, -1, -1, -1])
-        return tracks
-
-    def ease_out_quart(self, x):
-        return 1 - pow(1 - x, 4)
-
-
-if __name__ == '__main__':
-
-    sl = Slider()
-    while True:
-        zoom = sl.get_img()
-        distance = sl.match()
-        track = sl.get_tracks((distance + 7) * zoom, random.randint(2, 4), sl.ease_out_quart)
-        sl.move_to_gap(track)
-        time.sleep(5)
         try:
-            failure = sl.wait.until(
-                EC.text_to_be_present_in_element((By.CLASS_NAME, 'yidun_tips__text yidun-fallback__tip'), '向右拖动滑块填充拼图'))
+            failure = self.wait.until(EC.text_to_be_present_in_element((By.CLASS_NAME, 'yidun_tips__text'), '向右滑动滑块填充拼图'))
             print(failure)
         except:
             print('验证成功')
-            break
+            return None
         if failure:
-            print('验证失败')
-            pass
-        else:
-            print('验证成功')
-            break
+            self.crack_slider()
 
+def tg_push(text):
+    push_url = 'https://api.telegram.org/bot' + BOTTOKEN + '/sendMessage?chat_id=' + TGCHATID + '&text=' + text
+    rPush = requests.get(push_url)
+    if rPush.status_code == 200 :
+        print('推送成功')
+    elif rPush.status_code == 400 :
+        print('CHATID 填写有误')
+    else :
+        print('推送失败，未知错误')
 
+if __name__ == '__main__':
+    TGCHATID = getenv('TGCHATID')
+    BOTTOKEN = getenv('BOTTOKEN')
     usr = getenv('USERNAME')
     pwd = getenv('PASSWORD')
+
+    sl = CrackSlider()
+    sl.crack_slider()
     sl.driver.find_element_by_xpath("//input[@name='appId']").send_keys(usr)
     sl.driver.find_element_by_xpath("//input[@name='password']").send_keys(pwd)
     sl.driver.find_element_by_xpath("//button[@type='submit']").click()
     time.sleep(3)
+
     try:
         sl.driver.find_element_by_xpath('//*[@id="10000"]').click()
         sl.driver.find_element_by_xpath('//*[@id="tj"]').click()
         time.sleep(3)
+        result = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px"]').get_attribute("innerHTML")
+        tg_push(text=result)
         sl.driver.close()
     except:
+        result = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px"]').get_attribute("innerHTML").replace(' ', '').replace("\n", "")
+        tg_push(text=result)
         sl.driver.close()
