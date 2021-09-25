@@ -151,7 +151,7 @@ if __name__ == '__main__':
             result = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px"]').get_attribute("innerHTML")
             tg_push(text=result)
         except:
-             result = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px;margin-top: 17px"]').get_attribute("innerHTML")
+            result = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px;margin-top: 17px"]').get_attribute("innerHTML")
             tg_push(text=result)
         sl.driver.close()
     except:
