@@ -19,13 +19,13 @@ class CrackSlider():
     def __init__(self):
         super(CrackSlider, self).__init__()
         chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument('--headless')
+        '''chrome_options.add_argument('--headless')'''
         chrome_options.add_argument('--no-sandbox')
         chrome_options.add_argument('--disable-gpu')
         chrome_options.add_argument('--disable-dev-shm-usage')
         chromedriver = "/usr/bin/chromedriver"
         os.environ["webdriver.chrome.driver"] = chromedriver
-        self.driver = webdriver.Chrome(chrome_options=chrome_options,executable_path=chromedriver)
+        self.driver = webdriver.Chrome(options=chrome_options,executable_path=chromedriver)
         self.url = 'https://stuhealth.jnu.edu.cn/#/login'  # 测试网站
         self.wait = WebDriverWait(self.driver, 20)
         self.driver.get(self.url)
@@ -154,10 +154,13 @@ if __name__ == '__main__':
             print(result)
             tg_push(text=result[1])
         except:
-            temp = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px;margin-top: 17px"]').get_attribute("innerHTML")
-            result = re.split("<[^\u4e00-\u9fa5]+>",temp)
-            print(result)
-            tg_push(text=result[1])
+            try:
+                temp = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px;margin-top: 17px"]').get_attribute("innerHTML")
+                result = re.split("<[^\u4e00-\u9fa5]+>",temp)
+                print(result)
+                tg_push(text=result[1])
+            except:
+                tg_push(text="签到失败，未知错误")
         sl.driver.close()
     except:
         try:
@@ -166,8 +169,11 @@ if __name__ == '__main__':
             print(result)
             tg_push(text=result[1])
         except:
-            temp = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px;margin-top: 17px"]').get_attribute("innerHTML")
-            result = re.split("<[^\u4e00-\u9fa5]+>",temp)
-            print(result)
-            tg_push(text=result[1])
+            try:
+                temp = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px;margin-top: 17px"]').get_attribute("innerHTML")
+                result = re.split("<[^\u4e00-\u9fa5]+>",temp)
+                print(result)
+                tg_push(text=result[1])
+            except:
+                tg_push(text="签到失败，未知错误")
         sl.driver.close()
