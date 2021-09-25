@@ -116,7 +116,7 @@ class CrackSlider():
             print('滑动验证不通过，正在重试')
             self.crack_slider()
         else:
-            print('滑动验证通过')
+            print(self.driver.find_element_by_xpath('//*[@class="yidun_tips__text yidun-fallback__tip"]').get_attribute("innerHTML") + '滑动验证通过')
 
 def tg_push(text):
     push_url = 'https://api.telegram.org/bot' + BOTTOKEN + '/sendMessage?chat_id=' + TGCHATID + '&text=' + text
