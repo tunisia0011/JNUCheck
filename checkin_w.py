@@ -104,14 +104,12 @@ class CrackSlider():
         ActionChains(self.driver).move_by_offset(xoffset=3, yoffset=0).perform()
         time.sleep(0.5)
         ActionChains(self.driver).release().perform()
-'''        try:
-            failure = self.wait.until(EC.text_to_be_present_in_element((By.CLASS_NAME, 'yidun_tips__text'), '向右滑动滑块填充拼图'))
-            print(failure)
-        except:
-            print('Verification Successful')
-            return None
-        if failure:
-            self.crack_slider()'''
+        time.sleep(2)
+        if (self.driver.find_element_by_xpath('//*[@class="yidun_tips__text yidun-fallback__tip"]').get_attribute("innerHTML") == '向右拖动滑块填充拼图'):
+            print('Verification Failed, Retrying')
+            self.crack_slider()
+        else:
+            print(self.driver.find_element_by_xpath('//*[@class="yidun_tips__text yidun-fallback__tip"]').get_attribute("innerHTML") + 'Verification Successful')
 
 def tg_push(text):
     push_url = 'https://api.telegram.org/bot' + BOTTOKEN + '/sendMessage?chat_id=' + TGCHATID + '&text=' + text
