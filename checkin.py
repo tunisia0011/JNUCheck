@@ -154,13 +154,10 @@ if __name__ == '__main__':
             print(result)
             tg_push(text=result[1])
         except:
-            try:
-                temp = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px;margin-top: 17px"]').get_attribute("innerHTML")
-                result = re.split("<[^\u4e00-\u9fa5]+>",temp)
-                print(result)
-                tg_push(text=result[1])
-            except:
-                tg_push(text="签到失败，未知错误")
+            temp = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px;margin-top: 17px"]').get_attribute("innerHTML")
+            result = re.split("<[^\u4e00-\u9fa5]+>",temp)
+            print(result)
+            tg_push(text=result[1])
         sl.driver.close()
     except:
         try:
@@ -169,11 +166,8 @@ if __name__ == '__main__':
             print(result)
             tg_push(text=result[1])
         except:
-            try:
-                temp = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px;margin-top: 17px"]').get_attribute("innerHTML")
-                result = re.split("<[^\u4e00-\u9fa5]+>",temp)
-                print(result)
-                tg_push(text=result[1])
-            except:
-                tg_push(text="签到失败，未知错误")
+            temp = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px;margin-top: 17px"]').get_attribute("innerHTML")
+            result = re.split("<[^\u4e00-\u9fa5]+>",temp)
+            print(result)
+            tg_push(text=result[1])
         sl.driver.close()
