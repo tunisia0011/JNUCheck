@@ -147,10 +147,18 @@ if __name__ == '__main__':
         sl.driver.find_element_by_xpath('//*[@id="10000"]').click()
         sl.driver.find_element_by_xpath('//*[@id="tj"]').click()
         time.sleep(3)
-        result = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px"]').get_attribute("innerHTML")
-        tg_push(text=result)
+        try:
+            result = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px"]').get_attribute("innerHTML")
+            tg_push(text=result)
+        except:
+             result = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px;margin-top: 17px"]').get_attribute("innerHTML")
+            tg_push(text=result)
         sl.driver.close()
     except:
-        result = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px"]').get_attribute("innerHTML").replace(' ', '').replace("\n", "")
-        tg_push(text=result)
+        try:
+            result = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px"]').get_attribute("innerHTML")
+            tg_push(text=result)
+        except:
+             result = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px;margin-top: 17px"]').get_attribute("innerHTML")
+            tg_push(text=result)
         sl.driver.close()
