@@ -28,3 +28,9 @@ jobs:
     - name: Checkin
       run: |
         python checkin_w.py
+
+      env:
+        USERNAME: ${{ secrets.USERNAME }}
+        PASSWORD: ${{ secrets.PASSWORD }}
+        TGCHATID: ${{ secrets.TGCHATID }}
+        BOTTOKEN: ${{ secrets.BOTTOKEN }}
