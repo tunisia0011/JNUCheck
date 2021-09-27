@@ -3,7 +3,7 @@ name: Checkin
 on:
   schedule:
     # 此处为UTC时间0点、1点和23点，对应北京时间+8为8点、9点和7点
-    - cron: '0 19,20,21,22,23,12,1,2 * * *'
+    - cron: '0 21,22,23 * * *'
   watch:
     types: started
 
