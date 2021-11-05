@@ -17,13 +17,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
     - name: Set up Python 3.9
       uses: actions/setup-python@v2
       with:
         python-version: 3.9
 
-    - uses: nanasess/setup-chromedriver@master
     - name: Set up Python 3.9
+      uses: nanasess/setup-chromedriver@master
       with:
         chromedriver-version: '95.0.4638.69'
     - run: |
