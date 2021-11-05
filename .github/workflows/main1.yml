@@ -23,7 +23,7 @@ jobs:
       with:
         python-version: 3.9
 
-    - name: Set up Python 3.9
+    - name: Set up Chromedriver
       uses: nanasess/setup-chromedriver@master
       with:
         chromedriver-version: '95.0.4638.69'
