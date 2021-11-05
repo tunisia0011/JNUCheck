@@ -1,4 +1,4 @@
-name: Checkin2
+name: Checkin
 
 on:
   schedule:
@@ -25,8 +25,8 @@ jobs:
 
     - name: Set up Chromedriver
       uses: nanasess/setup-chromedriver@master
-      with:
-        chromedriver-version: '95.0.4638.54'
+
+    - name: Environment
     - run: |
         export DISPLAY=:99
         chromedriver --url-base=/wd/hub &
@@ -37,7 +37,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         google-chrome --version
-    - name: 打卡
+    - name: Check in
       run: |
         python checkin.py
       env:
