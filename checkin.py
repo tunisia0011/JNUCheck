@@ -6,6 +6,7 @@ import numpy as np
 from io import BytesIO
 import time, requests
 from PIL import Image
+from datetime import date
 from selenium import webdriver
 from pyvirtualdisplay import Display
 from selenium.webdriver import ActionChains
@@ -140,23 +141,35 @@ if __name__ == '__main__':
 
     sl = CrackSlider()
     sl.crack_slider()
-    sl.driver.find_element_by_xpath("//input[@name='appId']").send_keys(usr)
-    sl.driver.find_element_by_xpath("//input[@name='password']").send_keys(pwd)
-    sl.driver.find_element_by_xpath("//button[@type='submit']").click()
+    sl.driver.find_element(By.XPATH, '//input[@name="appId"]').send_keys(usr)
+    sl.driver.find_element(By.XPATH, '//input[@name="password"]').send_keys(pwd)
+    sl.driver.find_element(By.XPATH, '//button[@type="submit"]').click()
     time.sleep(3)
 
     try:
-        sl.driver.find_element_by_xpath('//*[@id="10000"]').click()
-        sl.driver.find_element_by_xpath('//*[@id="tj"]').click()
+        sl.driver.find_element(By.ID, 'cjtw').send_keys("36")
+        sl.driver.find_element(By.ID, 'wujtw').send_keys("36")
+        sl.driver.find_element(By.ID, 'wajtw').send_keys("36")
+        js = "$('input[id=twyjcrq]').removeAttr('readonly')"
+        sl.driver.execute_script(js)
+        js = "$('input[id=twejcrq]').removeAttr('readonly')"
+        sl.driver.execute_script(js)
+        js = "$('input[id=twsjcrq]').removeAttr('readonly')"
+        sl.driver.execute_script(js)
+        sl.driver.find_element(By.ID, 'twyjcrq').send_keys(str(date.today()))
+        sl.driver.find_element(By.ID, 'twejcrq').send_keys(str(date.today()))
+        sl.driver.find_element(By.ID, 'twsjcrq').send_keys(str(date.today()))
+        sl.driver.find_element(By.XPATH, '//*[@id="10000"]').click()
+        sl.driver.find_element(By.XPATH, '//*[@id="tj"]').click()
         time.sleep(3)
         try:
-            temp = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px"]').get_attribute("innerHTML")
+            temp = sl.driver.find_element(By.XPATH, '//*[@style="text-align: center;margin-bottom: 100px"]').get_attribute("innerHTML")
             result = re.split("<[^\u4e00-\u9fa5]+>",temp)
             print(result)
             tg_push(text=result[1])
         except:
             try:
-                temp = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px;margin-top: 17px"]').get_attribute("innerHTML")
+                temp = sl.driver.find_element(By.XPATH, '//*[@style="text-align: center;margin-bottom: 100px;margin-top: 17px"]').get_attribute("innerHTML")
                 result = re.split("<[^\u4e00-\u9fa5]+>",temp)
                 print(result)
                 tg_push(text=result[1])
@@ -165,13 +178,13 @@ if __name__ == '__main__':
         sl.driver.close()
     except:
         try:
-            temp = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px"]').get_attribute("innerHTML")
+            temp = sl.driver.find_element(By.XPATH, '//*[@style="text-align: center;margin-bottom: 100px"]').get_attribute("innerHTML")
             result = re.split("<[^\u4e00-\u9fa5]+>",temp)
             print(result)
             tg_push(text=result[1])
         except:
             try:
-                temp = sl.driver.find_element_by_xpath('//*[@style="text-align: center;margin-bottom: 100px;margin-top: 17px"]').get_attribute("innerHTML")
+                temp = sl.driver.find_element(By.XPATH, '//*[@style="text-align: center;margin-bottom: 100px;margin-top: 17px"]').get_attribute("innerHTML")
                 result = re.split("<[^\u4e00-\u9fa5]+>",temp)
                 print(result)
                 tg_push(text=result[1])
