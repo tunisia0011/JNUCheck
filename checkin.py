@@ -6,7 +6,6 @@ import numpy as np
 from io import BytesIO
 import time, requests
 from PIL import Image
-from datetime import date
 from selenium import webdriver
 from pyvirtualdisplay import Display
 from selenium.webdriver import ActionChains
@@ -147,18 +146,6 @@ if __name__ == '__main__':
     time.sleep(3)
 
     try:
-        sl.driver.find_element(By.ID, 'cjtw').send_keys("36")
-        sl.driver.find_element(By.ID, 'wujtw').send_keys("36")
-        sl.driver.find_element(By.ID, 'wajtw').send_keys("36")
-        js = "$('input[id=twyjcrq]').removeAttr('readonly')"
-        sl.driver.execute_script(js)
-        js = "$('input[id=twejcrq]').removeAttr('readonly')"
-        sl.driver.execute_script(js)
-        js = "$('input[id=twsjcrq]').removeAttr('readonly')"
-        sl.driver.execute_script(js)
-        sl.driver.find_element(By.ID, 'twyjcrq').send_keys(str(date.today()))
-        sl.driver.find_element(By.ID, 'twejcrq').send_keys(str(date.today()))
-        sl.driver.find_element(By.ID, 'twsjcrq').send_keys(str(date.today()))
         sl.driver.find_element(By.XPATH, '//*[@id="10000"]').click()
         sl.driver.find_element(By.XPATH, '//*[@id="tj"]').click()
         time.sleep(3)
