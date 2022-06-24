@@ -23,6 +23,13 @@ jobs:
       with:
         python-version: 3.9
 
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 14
+      run: npm ci
+      run: npm test
+
     - name: Set up Chromedriver
       uses: nanasess/setup-chromedriver@master
 
