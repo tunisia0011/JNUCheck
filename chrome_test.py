@@ -37,13 +37,13 @@ class chrome_test(object):
             EC.presence_of_element_located((By.CLASS_NAME, 'yidun_slider'))
         )
         time.sleep(5)
-        button_element = self.driver.find_element_by_class_name('yidun_slider')
+        button_element = self.driver.find_element(By.CLASS_NAME, 'yidun_slider')
         ActionChains(self.driver).move_to_element(button_element).perform()
         # 下载验证码进行识别
         yidun = yidun_crack()
-        bg_img_src = self.driver.find_element_by_class_name("yidun_bg-img").get_attribute("src")
+        bg_img_src = self.driver.find_element(By.CLASS_NAME, "yidun_bg-img").get_attribute("src")
         bg_img_path = yidun.download_img(bg_img_src)
-        front_img_src = self.driver.find_element_by_class_name("yidun_jigsaw").get_attribute("src")
+        front_img_src = self.driver.find_element(By.CLASS_NAME, "yidun_jigsaw").get_attribute("src")
         front_img_path = yidun.download_img(front_img_src)
         yidun.bg_img_path = bg_img_path
         yidun.front_img_path = front_img_path
@@ -63,12 +63,12 @@ class chrome_test(object):
             tracks[i][2] = t
         ActionChains(self.driver).release().perform()
         time.sleep(2)
-        if (self.driver.find_element_by_xpath('//*[@class="yidun_tips__text yidun-fallback__tip"]').get_attribute("innerHTML") == '向右拖动滑块填充拼图'):
+        if (self.driver.find_element(By.XPATH, '//*[@class="yidun_tips__text yidun-fallback__tip"]').get_attribute("innerHTML") == '向右拖动滑块填充拼图'):
             print('滑动验证不通过，正在重试')
             # self.driver.refresh()
             self.run()
         else:
-            print(self.driver.find_element_by_xpath('//*[@class="yidun_tips__text yidun-fallback__tip"]').get_attribute("innerHTML") + '滑动验证通过')
+            print(self.driver.find_element(By.XPATH, '//*[@class="yidun_tips__text yidun-fallback__tip"]').get_attribute("innerHTML") + '滑动验证通过')
 
     #def __del__(self):
     #    self.driver.close()
