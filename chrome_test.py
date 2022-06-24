@@ -36,7 +36,7 @@ class chrome_test(object):
         WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'yidun_slider'))
         )
-        time.sleep(2)
+        time.sleep(5)
         button_element = self.driver.find_element_by_class_name('yidun_slider')
         ActionChains(self.driver).move_to_element(button_element).perform()
         # 下载验证码进行识别
