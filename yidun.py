@@ -14,7 +14,7 @@ from matplotlib import pyplot
 
 from config import yidun_id, yidun_referer
 
-img_dir = 'images/'
+img_dir = './'
 
 
 def load_js(js_path):
